@@ -10,9 +10,32 @@ namespace Snake.models
 {
     public class Arena
     {
+        /// <summary>
+        /// A játék ütemét adó időzítő
+        /// </summary>
         private DispatcherTimer GameTimer;
+
+        /// <summary>
+        /// A játékidő mérésére szolgál
+        /// </summary>
         private TimeSpan PlayTime;
+
+        //Az elért pontok
+        private int Points;
+
+        //A megevett ételek száma
+        private int EatenMealsCount;
+
+        //Lesz egy saját kígyó is
+        private Snake Snake;
+
+
+
+        /// <summary>
+        /// A képernyő amin a játék fut
+        /// </summary>
         private MainWindow MainWindow;
+
 
         public Arena(MainWindow mainWindow)
         {
