@@ -22,7 +22,7 @@
             <Label Grid.Row="0" Content="Pontszám"/>
             <Label Grid.Row="1" Content="Megevett ételek"/>
             <Label Grid.Row="2" Content="Kígyó hossza"/>
-            <Label Grid.Row="3" Content="Játékidő"/>
+            <Label Grid.Row="3" x:Name="LabelPlayTime"/>
             <Button Grid.Row="4" Content="Start"
                     x:Name="ButtonStart"
                     Padding="10"

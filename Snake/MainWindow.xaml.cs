@@ -25,7 +25,9 @@ namespace Snake
         public MainWindow()
         {
             InitializeComponent();
-            Arena = new Arena();
+            //this: hivatkozik arra az osztálypéldányra, amiben éppen vagyok, vagyis a megjelenített ablakot küldöm be
+            //az Arena példányba.(Dependency Injection)
+            Arena = new Arena(this);
         }
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
