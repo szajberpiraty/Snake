@@ -24,15 +24,19 @@
             <Label Grid.Row="2" Content="Kígyó hossza"/>
             <Label Grid.Row="3" Content="Játékidő"/>
             <Button Grid.Row="4" Content="Start"
+                    x:Name="ButtonStart"
                     Padding="10"
                     Margin="10"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"/>
+                    VerticalAlignment="Bottom" 
+                    Click="ButtonStart_Click"/>
             <Button Grid.Row="4" Content="Stop"
+                    x:Name="ButtonStop"
                     Padding="10"
                     Margin="10"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"/>
+                    VerticalAlignment="Bottom" 
+                    Click="ButtonStop_Click"/>
 
 
         </Grid>

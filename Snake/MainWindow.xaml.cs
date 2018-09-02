@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Snake.models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,23 @@ namespace Snake
     /// </summary>
     public partial class MainWindow : Window
     {
+        Arena Arena;
         public MainWindow()
         {
             InitializeComponent();
+            Arena = new Arena();
+        }
+
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
+            //Good
+            Arena.Start();
+        }
+
+        private void ButtonStop_Click(object sender, RoutedEventArgs e)
+        {
+            //Good
+            Arena.Stop();
         }
     }
 }
