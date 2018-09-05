@@ -41,5 +41,20 @@ namespace Snake
             //Good
             Arena.Stop();
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Left:
+                case Key.Right:
+                case Key.Up:
+                case Key.Down:
+                    //Ha a key Left vagy Right vagy Up vagy Down, lefut
+                    Arena.KeyDown(e.Key);
+                    break;
+                default:
+            }
+        }
     }
 }

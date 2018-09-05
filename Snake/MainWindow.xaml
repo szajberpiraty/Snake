@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Snake"
         mc:Ignorable="d"
+        KeyDown="Window_KeyDown"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -19,9 +20,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="Pontszám"/>
-            <Label Grid.Row="1" Content="Megevett ételek"/>
-            <Label Grid.Row="2" Content="Kígyó hossza"/>
+            <Label Grid.Row="0" x:Name="LabelPoints"/>
+            <Label Grid.Row="1" x:Name="LabelEatenMealsCount"/>
+            <Label Grid.Row="2" x:Name="LabelSnakeLength"/>
             <Label Grid.Row="3" x:Name="LabelPlayTime"/>
             <Button Grid.Row="4" Content="Start"
                     x:Name="ButtonStart"
