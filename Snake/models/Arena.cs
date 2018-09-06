@@ -79,12 +79,16 @@ namespace Snake.models
             switch (key)
             {
                 case Key.Left:
+                    Snake.Direction = SnakeDirections.Left;
                     break;
                 case Key.Right:
+                    Snake.Direction = SnakeDirections.Right;
                     break;
                 case Key.Up:
+                    Snake.Direction = SnakeDirections.Up;
                     break;
                 case Key.Down:
+                    Snake.Direction = SnakeDirections.Down;
                     break;
                 default:
                     throw new Exception($"Erre a gombra nem vagyunk felkészülve!{key}");
@@ -107,6 +111,7 @@ namespace Snake.models
             MainWindow.LabelPoints.Content=$"Pontszám:{Points}";
             MainWindow.LabelEatenMealsCount.Content=$"Megevett ételek:{EatenMealsCount}";
             MainWindow.LabelSnakeLength.Content=$"A kígyó hossza:{Snake.Length}";
+            MainWindow.LabelKeyDown.Content = $"A kígyó iránya:{Snake.Direction}";
 
         }
 

@@ -52,8 +52,12 @@ namespace Snake
                 case Key.Down:
                     //Ha a key Left vagy Right vagy Up vagy Down, lefut
                     Arena.KeyDown(e.Key);
+                    //Jelezzük, hogy nem kell további feldolgozás,
+                    //ha nem tesszük, akkor a gombjaink kijelölését is elvégzi, és az nem kell
+                    e.Handled = true;
                     break;
                 default:
+                    break;
             }
         }
     }

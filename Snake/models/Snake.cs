@@ -8,6 +8,7 @@ namespace Snake.models
 {
     public class Snake
     {
+        public SnakeDirections Direction { get; set; }
         public int Length { get; set; }
     }
 }

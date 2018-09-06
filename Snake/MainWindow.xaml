@@ -31,6 +31,11 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom" 
                     Click="ButtonStart_Click"/>
+            <Label Grid.Row="4"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   x:Name="LabelKeyDown" />
+
             <Button Grid.Row="4" Content="Stop"
                     x:Name="ButtonStop"
                     Padding="10"
