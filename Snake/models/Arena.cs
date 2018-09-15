@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Snake.models
@@ -66,9 +67,31 @@ namespace Snake.models
 
             randomNumberGenerator = new Random();
 
+            //ez így már jó, de a kibányászást ki kellene szervezni egy függvénybe
+            //kezelni kell az az esetet, amikor olyan helyre teszünk ételt ahol már van
+
             for (int i = 0; i < ArenaSettings.MealsCountForStart; i++)
             {
+                var x = randomNumberGenerator.Next(1,ArenaSettings.MaxX);
+                var y = randomNumberGenerator.Next(1, ArenaSettings.MaxY);
+                var meal = new GamePoint(x: x,y: y);
 
+                //megjelenítés
+
+                //minden sor MaxX elemből áll, úgy lehet megtalálni az adott koordinátát, hogy 
+                // leszámolok annyit, amennyi sor van, plusz az x
+                //tehát a harmadik sor 5. eleméhez 2*20 + 5-1 
+                var child=MainWindow.GridArena.Children[(meal.Y - 1) * ArenaSettings.MaxX + (meal.X - 1)];
+
+                //A children gyűjtemény UIElement elemekből áll, az imageawesome eléréséhez ki kell bányászni belőle
+                //így már van icon property
+                ((FontAwesome.WPF.ImageAwesome)child).Icon = FontAwesome.WPF.FontAwesomeIcon.Star;
+                ((FontAwesome.WPF.ImageAwesome)child).Foreground = Brushes.Red;
+                ((FontAwesome.WPF.ImageAwesome)child).Spin = true;
+
+
+                //hozzáadni a listához
+                Meals.Add(meal);
             }
         }
 
