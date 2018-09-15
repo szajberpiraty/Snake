@@ -36,7 +36,14 @@ namespace Snake.models
         /// A képernyő amin a játék fut
         /// </summary>
         private MainWindow MainWindow;
-
+        /// <summary>
+        /// Az ételek listája, amit a kígyó megehet
+        /// </summary>
+        private List<GamePoint> Meals;
+        /// <summary>
+        /// Véletlenszám generátor
+        /// </summary>
+        private Random randomNumberGenerator;
 
         public Arena(MainWindow mainWindow)
         {
@@ -49,7 +56,20 @@ namespace Snake.models
         public void Start()
         {
             SetNewGameCounters();
+            SetMealsForStart();
             GameTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.Normal, ItIsTimeForShow, Application.Current.Dispatcher);
+        }
+
+        private void SetMealsForStart()
+        {
+            Meals = new List<GamePoint>();
+
+            randomNumberGenerator = new Random();
+
+            for (int i = 0; i < ArenaSettings.MealsCountForStart; i++)
+            {
+
+            }
         }
 
         //A játék megállítása
