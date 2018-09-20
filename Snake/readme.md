@@ -13,3 +13,4 @@ Billenytű események figyelése, folytatás 3.video 33:38-tól
 5. videó, folytatás 18 perctől
 
 6.videótól folytatás
+6.videó 29.percétől folytatás

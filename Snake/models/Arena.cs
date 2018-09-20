@@ -42,9 +42,9 @@ namespace Snake.models
         /// </summary>
         private List<GamePoint> Meals;
         /// <summary>
-        /// Véletlenszám generátor
+        /// Véletlenszám generátor, az aréna létrejöttekor inicializálódik
         /// </summary>
-        private Random randomNumberGenerator;
+        private Random randomNumberGenerator=new Random();
 
         public Arena(MainWindow mainWindow)
         {
@@ -58,6 +58,10 @@ namespace Snake.models
         {
             SetNewGameCounters();
             SetMealsForStart();
+            if (GameTimer!=null)
+            {
+                GameTimer.Stop();
+            }
             GameTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.Normal, ItIsTimeForShow, Application.Current.Dispatcher);
         }
 
@@ -65,34 +69,59 @@ namespace Snake.models
         {
             Meals = new List<GamePoint>();
 
-            randomNumberGenerator = new Random();
+           
 
             //ez így már jó, de a kibányászást ki kellene szervezni egy függvénybe
             //kezelni kell az az esetet, amikor olyan helyre teszünk ételt ahol már van
 
-            for (int i = 0; i < ArenaSettings.MealsCountForStart; i++)
-            {
-                var x = randomNumberGenerator.Next(1,ArenaSettings.MaxX);
+           while(Meals.Count<ArenaSettings.MealsCountForStart)
+            {//Addig megyünk amíg sikerül minden ételt kirakni
+                var x = randomNumberGenerator.Next(1, ArenaSettings.MaxX);
                 var y = randomNumberGenerator.Next(1, ArenaSettings.MaxY);
-                var meal = new GamePoint(x: x,y: y);
+                var meal = new GamePoint(x: x, y: y);
 
-                //megjelenítés
+               //A függvény igazat ad, ha a lambda igazat ad
+                if (!Meals.Any(gamePoint=>gamePoint.X==meal.X && gamePoint.Y==meal.Y))
+                {
 
-                //minden sor MaxX elemből áll, úgy lehet megtalálni az adott koordinátát, hogy 
-                // leszámolok annyit, amennyi sor van, plusz az x
-                //tehát a harmadik sor 5. eleméhez 2*20 + 5-1 
-                var child=MainWindow.GridArena.Children[(meal.Y - 1) * ArenaSettings.MaxX + (meal.X - 1)];
+                } //Csak akkkor továbbmenni, ha az étel nincs még a táblán
+
+
+                var child = GetGridArenaCell(meal);
 
                 //A children gyűjtemény UIElement elemekből áll, az imageawesome eléréséhez ki kell bányászni belőle
                 //így már van icon property
-                ((FontAwesome.WPF.ImageAwesome)child).Icon = FontAwesome.WPF.FontAwesomeIcon.Star;
-                ((FontAwesome.WPF.ImageAwesome)child).Foreground = Brushes.Red;
-                ((FontAwesome.WPF.ImageAwesome)child).Spin = true;
+                ShowMeal(child);
 
 
                 //hozzáadni a listához
                 Meals.Add(meal);
             }
+        }
+        /// <summary>
+        /// Megjelenítjük az ételt
+        /// </summary>
+        /// <param name="child"></param>
+        private static void ShowMeal(FontAwesome.WPF.ImageAwesome child)
+        {
+            child.Icon = FontAwesome.WPF.FontAwesomeIcon.Star;
+            child.Foreground = Brushes.Red;
+            child.Spin = true;
+            child.SpinDuration = 5;
+        }
+
+        private FontAwesome.WPF.ImageAwesome GetGridArenaCell(GamePoint gamePoint)
+        {
+
+            //megjelenítés
+
+            //minden sor MaxX elemből áll, úgy lehet megtalálni az adott koordinátát, hogy 
+            // leszámolok annyit, amennyi sor van, plusz az x
+            //tehát a harmadik sor 5. eleméhez 2*20 + 5-1 
+            var child= MainWindow.GridArena.Children[(gamePoint.Y - 1) * ArenaSettings.MaxX + (gamePoint.X - 1)];
+            var cell = (FontAwesome.WPF.ImageAwesome)child;
+
+            return cell;
         }
 
         //A játék megállítása
