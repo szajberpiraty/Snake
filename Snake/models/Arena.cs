@@ -84,18 +84,21 @@ namespace Snake.models
                 if (!Meals.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y))
                 {
 
+                    //A children gyűjtemény UIElement elemekből áll, az imageawesome eléréséhez ki kell bányászni belőle
+                    //így már van icon property
+                    ShowMeal(meal);
+
+
+                    //hozzáadni a listához
+                    Meals.Add(meal);
+
+
                 } //Csak akkkor továbbmenni, ha az étel nincs még a táblán
 
                 //megjelenítés vagy mi
                 
 
-                //A children gyűjtemény UIElement elemekből áll, az imageawesome eléréséhez ki kell bányászni belőle
-                //így már van icon property
-                ShowMeal(meal);
-
-
-                //hozzáadni a listához
-                Meals.Add(meal);
+              
             }
         }
         /// <summary>
