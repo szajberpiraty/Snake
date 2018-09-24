@@ -44,7 +44,7 @@ namespace Snake.models
         /// <summary>
         /// Véletlenszám generátor, az aréna létrejöttekor inicializálódik
         /// </summary>
-        private Random randomNumberGenerator=new Random();
+        private Random randomNumberGenerator = new Random();
 
         public Arena(MainWindow mainWindow)
         {
@@ -58,7 +58,7 @@ namespace Snake.models
         {
             SetNewGameCounters();
             SetMealsForStart();
-            if (GameTimer!=null)
+            if (GameTimer != null)
             {
                 GameTimer.Stop();
             }
@@ -69,29 +69,29 @@ namespace Snake.models
         {
             Meals = new List<GamePoint>();
 
-           
+
 
             //ez így már jó, de a kibányászást ki kellene szervezni egy függvénybe
             //kezelni kell az az esetet, amikor olyan helyre teszünk ételt ahol már van
 
-           while(Meals.Count<ArenaSettings.MealsCountForStart)
+            while (Meals.Count < ArenaSettings.MealsCountForStart)
             {//Addig megyünk amíg sikerül minden ételt kirakni
                 var x = randomNumberGenerator.Next(1, ArenaSettings.MaxX);
                 var y = randomNumberGenerator.Next(1, ArenaSettings.MaxY);
                 var meal = new GamePoint(x: x, y: y);
 
-               //A függvény igazat ad, ha a lambda igazat ad
-                if (!Meals.Any(gamePoint=>gamePoint.X==meal.X && gamePoint.Y==meal.Y))
+                //A függvény igazat ad, ha a lambda igazat ad
+                if (!Meals.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y))
                 {
 
                 } //Csak akkkor továbbmenni, ha az étel nincs még a táblán
 
-
-                var child = GetGridArenaCell(meal);
+                //megjelenítés vagy mi
+                
 
                 //A children gyűjtemény UIElement elemekből áll, az imageawesome eléréséhez ki kell bányászni belőle
                 //így már van icon property
-                ShowMeal(child);
+                ShowMeal(meal);
 
 
                 //hozzáadni a listához
@@ -102,13 +102,22 @@ namespace Snake.models
         /// Megjelenítjük az ételt
         /// </summary>
         /// <param name="child"></param>
-        private static void ShowMeal(FontAwesome.WPF.ImageAwesome child)
+        private void ShowMeal(GamePoint meal)
         {
+            var child = GetGridArenaCell(meal);
             child.Icon = FontAwesome.WPF.FontAwesomeIcon.Star;
             child.Foreground = Brushes.Red;
             child.Spin = true;
             child.SpinDuration = 5;
         }
+        private void ShowSnakeHead(GamePoint meal)
+        {
+            var child = GetGridArenaCell(meal);
+            child.Icon = FontAwesome.WPF.FontAwesomeIcon.Circle;
+            child.Foreground = Brushes.Green;
+                        
+        }
+
 
         private FontAwesome.WPF.ImageAwesome GetGridArenaCell(GamePoint gamePoint)
         {
@@ -118,7 +127,7 @@ namespace Snake.models
             //minden sor MaxX elemből áll, úgy lehet megtalálni az adott koordinátát, hogy 
             // leszámolok annyit, amennyi sor van, plusz az x
             //tehát a harmadik sor 5. eleméhez 2*20 + 5-1 
-            var child= MainWindow.GridArena.Children[(gamePoint.Y - 1) * ArenaSettings.MaxX + (gamePoint.X - 1)];
+            var child = MainWindow.GridArena.Children[(gamePoint.Y - 1) * ArenaSettings.MaxX + (gamePoint.X - 1)];
             var cell = (FontAwesome.WPF.ImageAwesome)child;
 
             return cell;
@@ -164,7 +173,7 @@ namespace Snake.models
                     break;
                 default:
                     throw new Exception($"Erre a gombra nem vagyunk felkészülve!{key}");
-                    
+
             }
         }
 
@@ -180,13 +189,13 @@ namespace Snake.models
         private void ShowGameCounters()
         {
             MainWindow.LabelPlayTime.Content = $"Játékidő:{PlayTime.ToString("mm\\:ss")}";
-            MainWindow.LabelPoints.Content=$"Pontszám:{Points}";
-            MainWindow.LabelEatenMealsCount.Content=$"Megevett ételek:{EatenMealsCount}";
-            MainWindow.LabelSnakeLength.Content=$"A kígyó hossza:{Snake.Length}";
+            MainWindow.LabelPoints.Content = $"Pontszám:{Points}";
+            MainWindow.LabelEatenMealsCount.Content = $"Megevett ételek:{EatenMealsCount}";
+            MainWindow.LabelSnakeLength.Content = $"A kígyó hossza:{Snake.Length}";
             MainWindow.LabelKeyDown.Content = $"A kígyó iránya:{Snake.Direction}";
 
         }
 
-       
+
     }
 }
