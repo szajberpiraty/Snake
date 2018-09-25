@@ -57,12 +57,21 @@ namespace Snake.models
         public void Start()
         {
             SetNewGameCounters();
+            //először a kígyót tesszük ki, így nem kell az ételekkel foglalkozni, az étel könnyebben igazodik a kígyóhoz
+
+            SetSnakeForStart();
+
             SetMealsForStart();
             if (GameTimer != null)
             {
                 GameTimer.Stop();
             }
             GameTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.Normal, ItIsTimeForShow, Application.Current.Dispatcher);
+        }
+
+        private void SetSnakeForStart()
+        {
+           
         }
 
         private void SetMealsForStart()
@@ -76,9 +85,7 @@ namespace Snake.models
 
             while (Meals.Count < ArenaSettings.MealsCountForStart)
             {//Addig megyünk amíg sikerül minden ételt kirakni
-                var x = randomNumberGenerator.Next(1, ArenaSettings.MaxX);
-                var y = randomNumberGenerator.Next(1, ArenaSettings.MaxY);
-                var meal = new GamePoint(x: x, y: y);
+                var meal = GetRandomGamePoint();
 
                 //A függvény igazat ad, ha a lambda igazat ad
                 if (!Meals.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y))
@@ -96,11 +103,23 @@ namespace Snake.models
                 } //Csak akkkor továbbmenni, ha az étel nincs még a táblán
 
                 //megjelenítés vagy mi
-                
 
-              
+
+
             }
         }
+        /// <summary>
+        /// kijelöl egy véletlen pontot a képernyőn
+        /// </summary>
+        /// <returns></returns>
+        private GamePoint GetRandomGamePoint()
+        {
+            var x = randomNumberGenerator.Next(1, ArenaSettings.MaxX);
+            var y = randomNumberGenerator.Next(1, ArenaSettings.MaxY);
+            var gamePoint = new GamePoint(x: x, y: y);
+            return gamePoint;
+        }
+
         /// <summary>
         /// Megjelenítjük az ételt
         /// </summary>
