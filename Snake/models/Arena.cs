@@ -71,8 +71,27 @@ namespace Snake.models
 
         private void SetSnakeForStart()
         {
+            var head = GetRandomGamePoint();
+            //kígyóelhelyezés, vízszintesen rajzolunk, ha x 10-nél nagyobb balra, egyébként jobbra
+            ShowSnakeHead(head);
+
+            for (int i = 0; i < ArenaSettings.SnakeCountForStart; i++)
+            {
+                if (head.X <= 10)
+                {//jobbra nyúlik
+                    ShowSnakeTail(new GamePoint(head.X+i+1,head.Y));
+                }
+                else
+                {//balra nyúlik
+                    ShowSnakeTail(new GamePoint(head.X - i - 1, head.Y));
+                }
+            }
+
            
+
         }
+
+        
 
         private void SetMealsForStart()
         {
@@ -132,12 +151,22 @@ namespace Snake.models
             child.Spin = true;
             child.SpinDuration = 5;
         }
-        private void ShowSnakeHead(GamePoint meal)
+        private void ShowSnakeHead(GamePoint head)
         {
-            var child = GetGridArenaCell(meal);
+            var child = GetGridArenaCell(head);
             child.Icon = FontAwesome.WPF.FontAwesomeIcon.Circle;
             child.Foreground = Brushes.Green;
                         
+        }
+
+        /// <summary>
+        /// A kígyó farkának megjelenítése
+        /// </summary>
+        private void ShowSnakeTail(GamePoint tail)
+        {
+            var child = GetGridArenaCell(tail);
+            child.Icon = FontAwesome.WPF.FontAwesomeIcon.Circle;
+            child.Foreground = Brushes.Blue;
         }
 
 

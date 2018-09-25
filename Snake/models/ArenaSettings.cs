@@ -18,5 +18,6 @@
         /// Kezdőérték beállítása
         /// </summary>
         public static int MealsCountForStart { get; } = 8;
+        public static int SnakeCountForStart { get; } = 5;
     }
 }
