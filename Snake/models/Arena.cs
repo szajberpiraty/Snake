@@ -72,19 +72,31 @@ namespace Snake.models
         private void SetSnakeForStart()
         {
             var head = GetRandomGamePoint();
+
+            Snake = new Snake();
+            Snake.Gamepoints = new List<GamePoint>();
+            Snake.Gamepoints.Add(head);
+
+
+
             //kígyóelhelyezés, vízszintesen rajzolunk, ha x 10-nél nagyobb balra, egyébként jobbra
             ShowSnakeHead(head);
 
             for (int i = 0; i < ArenaSettings.SnakeCountForStart; i++)
             {
+                GamePoint gamePoint;
                 if (head.X <= 10)
                 {//jobbra nyúlik
-                    ShowSnakeTail(new GamePoint(head.X+i+1,head.Y));
+                    gamePoint = new GamePoint(head.X + i + 1, head.Y);
+                   
                 }
                 else
                 {//balra nyúlik
-                    ShowSnakeTail(new GamePoint(head.X - i - 1, head.Y));
+                    gamePoint = new GamePoint(head.X - i - 1, head.Y);
+                    
                 }
+                Snake.Gamepoints.Add(gamePoint);
+                ShowSnakeTail(gamePoint);
             }
 
            
@@ -107,7 +119,7 @@ namespace Snake.models
                 var meal = GetRandomGamePoint();
 
                 //A függvény igazat ad, ha a lambda igazat ad
-                if (!Meals.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y))
+                if (!Meals.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y) && !Snake.Gamepoints.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y))
                 {
 
                     //A children gyűjtemény UIElement elemekből áll, az imageawesome eléréséhez ki kell bányászni belőle
@@ -195,6 +207,38 @@ namespace Snake.models
         {
             //Frissíteni a játékidőt
             PlayTime = PlayTime.Add(TimeSpan.FromMilliseconds(100));
+
+            //játékmenet frissítés
+            // a kígyó feje mozog a kijelölt irányba
+            var oldHead = Snake.Gamepoints[0];
+            GamePoint newHead=null;
+
+            switch (Snake.Direction)
+            {
+                case SnakeDirections.None:
+                    break;
+                case SnakeDirections.Left:
+                    newHead = new GamePoint(oldHead.X-1,oldHead.Y);
+                    break;
+                case SnakeDirections.Right:
+                    newHead = new GamePoint(oldHead.X + 1, oldHead.Y);
+                    break;
+                case SnakeDirections.Up:
+                    newHead = new GamePoint(oldHead.X, oldHead.Y-1);
+                    break;
+                case SnakeDirections.Down:
+                    newHead = new GamePoint(oldHead.X, oldHead.Y + 1);
+                    break;
+                default:
+                    throw new Exception($"Erre nem vagyunk felkészülve!{Snake.Direction}");
+                  
+            }
+            //le kell ellenőrizni, hogy 
+            //saját magába harapott-e
+            //megevett-e ételt
+            //nekiment-e a falnak
+            //megjeleníteni a kígyó új helyzetét
+
 
             //Itt meg kéne valahogy keresni a MainWindow képernyőt és arra írni. Ez idejétmúlt megoldás.
             //A korszerű megoldás, hogy at Arena megkapja a MainWindow-t, elmenti magának, dolgozik rajta.
