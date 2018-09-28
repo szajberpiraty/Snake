@@ -116,22 +116,7 @@ namespace Snake.models
 
             while (Meals.Count < ArenaSettings.MealsCountForStart)
             {//Addig megyünk amíg sikerül minden ételt kirakni
-                var meal = GetRandomGamePoint();
-
-                //A függvény igazat ad, ha a lambda igazat ad
-                if (!Meals.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y) && !Snake.Gamepoints.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y))
-                {
-
-                    //A children gyűjtemény UIElement elemekből áll, az imageawesome eléréséhez ki kell bányászni belőle
-                    //így már van icon property
-                    ShowMeal(meal);
-
-
-                    //hozzáadni a listához
-                    Meals.Add(meal);
-
-
-                } //Csak akkkor továbbmenni, ha az étel nincs még a táblán
+                GetNewMeal();
 
                 //megjelenítés vagy mi
 
@@ -139,6 +124,27 @@ namespace Snake.models
 
             }
         }
+
+        private void GetNewMeal()
+        {
+            var meal = GetRandomGamePoint();
+
+            //A függvény igazat ad, ha a lambda igazat ad
+            if (!Meals.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y) && !Snake.Gamepoints.Any(gamePoint => gamePoint.X == meal.X && gamePoint.Y == meal.Y))
+            {
+
+                //A children gyűjtemény UIElement elemekből áll, az imageawesome eléréséhez ki kell bányászni belőle
+                //így már van icon property
+                ShowMeal(meal);
+
+
+                //hozzáadni a listához
+                Meals.Add(meal);
+
+
+            } //Csak akkkor továbbmenni, ha az étel nincs még a táblán
+        }
+
         /// <summary>
         /// kijelöl egy véletlen pontot a képernyőn
         /// </summary>
@@ -163,6 +169,19 @@ namespace Snake.models
             child.Spin = true;
             child.SpinDuration = 5;
         }
+        /// <summary>
+        /// Eltüntetjük az ételt
+        /// </summary>
+        /// <param name="meal"></param>
+        private void HideMeal(GamePoint meal)
+        {
+            var child = GetGridArenaCell(meal);
+            child.Icon = FontAwesome.WPF.FontAwesomeIcon.SquareOutline;
+            child.Foreground = Brushes.Black;
+            child.Spin = false;
+            child.SpinDuration = 1;
+        }
+
         private void ShowSnakeHead(GamePoint head)
         {
             var child = GetGridArenaCell(head);
@@ -179,6 +198,13 @@ namespace Snake.models
             var child = GetGridArenaCell(tail);
             child.Icon = FontAwesome.WPF.FontAwesomeIcon.Circle;
             child.Foreground = Brushes.Blue;
+        }
+
+        private void HideSnakeTail(GamePoint tailEnd)
+        {
+            var child = GetGridArenaCell(tailEnd);
+            child.Icon = FontAwesome.WPF.FontAwesomeIcon.SquareOutline;
+            child.Foreground = Brushes.Black;
         }
 
 
@@ -233,11 +259,46 @@ namespace Snake.models
                     throw new Exception($"Erre nem vagyunk felkészülve!{Snake.Direction}");
                   
             }
+            if (newHead == null)
+            {//nincs új fej nincs mit tenni
+                return;
+            }
             //le kell ellenőrizni, hogy 
             //saját magába harapott-e
+            if (Snake.Gamepoints.Any(gp=>gp.X==newHead.X && gp.Y==newHead.Y))
+            {
+                GameOver();
+            }
             //megevett-e ételt
+            var IsEated = Meals.Any(gp => gp.X == newHead.X && gp.Y == newHead.Y);
+            if (IsEated)
+            {//ételt ettünk
+                //mégpedig ezt
+                var meal = Meals.Single(gp => gp.X == newHead.X && gp.Y == newHead.Y);
+                HideMeal(meal);
+                GetNewMeal();
+            }
+
             //nekiment-e a falnak
+            if (newHead.X==0 || newHead.Y==0 || newHead.X==ArenaSettings.MaxX || newHead.Y==ArenaSettings.MaxY)
+            {
+                GameOver();
+            }
+
             //megjeleníteni a kígyó új helyzetét
+
+            ShowSnakeTail(oldHead);
+
+
+            //Ha nem evett
+            if (!IsEated) { 
+            var tailEnd = Snake.Gamepoints[Snake.Gamepoints.Count - 1];
+            HideSnakeTail(tailEnd);
+                Snake.Gamepoints.Remove(tailEnd);
+            }
+
+            Snake.Gamepoints.Insert(0,newHead);
+            ShowSnakeHead(newHead);
 
 
             //Itt meg kéne valahogy keresni a MainWindow képernyőt és arra írni. Ez idejétmúlt megoldás.
@@ -246,10 +307,22 @@ namespace Snake.models
             ShowGameCounters();
         }
 
+        
+
+        private void GameOver()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Ha leütik valamelyik gombot, itt megérkezik
         /// </summary>
         /// <param name="key">jelzi hogy melyik nyílgombot ütötték le</param>
+        /// 
+
+        
+
+      
         public void KeyDown(Key key)
         {
             switch (key)
@@ -269,7 +342,10 @@ namespace Snake.models
                 default:
                     throw new Exception($"Erre a gombra nem vagyunk felkészülve!{key}");
 
+                  
+
             }
+           
         }
 
         private void SetNewGameCounters()
