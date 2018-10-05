@@ -151,8 +151,8 @@ namespace Snake.models
         /// <returns></returns>
         private GamePoint GetRandomGamePoint()
         {
-            var x = randomNumberGenerator.Next(1, ArenaSettings.MaxX);
-            var y = randomNumberGenerator.Next(1, ArenaSettings.MaxY);
+            var x = randomNumberGenerator.Next(1, ArenaSettings.MaxX+1);
+            var y = randomNumberGenerator.Next(1, ArenaSettings.MaxY+1);
             var gamePoint = new GamePoint(x: x, y: y);
             return gamePoint;
         }
@@ -280,7 +280,7 @@ namespace Snake.models
             }
 
             //nekiment-e a falnak
-            if (newHead.X==0 || newHead.Y==0 || newHead.X==ArenaSettings.MaxX || newHead.Y==ArenaSettings.MaxY)
+            if (newHead.X==0 || newHead.Y==0 || newHead.X==ArenaSettings.MaxX+1 || newHead.Y==ArenaSettings.MaxY+1)
             {
                 GameOver();
             }
