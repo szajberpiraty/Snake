@@ -274,9 +274,19 @@ namespace Snake.models
                 //todo:nem vesszük le a megevett ételt a listáról
 
                 Snake.Eat(meal);
+                Meals.Remove(meal);
 
                 HideMeal(meal);
-                GetNewMeal();
+                while (Meals.Count < ArenaSettings.MealsCountForStart)
+                {//Addig megyünk amíg sikerül minden ételt kirakni
+                    GetNewMeal();
+
+                    //megjelenítés vagy mi
+
+
+
+                }
+                
             }
 
             //nekiment-e a falnak
@@ -311,7 +321,9 @@ namespace Snake.models
 
         private void GameOver()
         {
-            throw new NotImplementedException();
+            Stop();
+            MessageBox.Show("Játék vége!");
+
         }
 
         /// <summary>
