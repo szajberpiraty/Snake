@@ -22,11 +22,7 @@ namespace Snake.models
         /// </summary>
         private TimeSpan PlayTime;
 
-        //Az elért pontok
-        private int Points;
-
-        //A megevett ételek száma
-        private int EatenMealsCount;
+     
 
         //Lesz egy saját kígyó is
         private Snake Snake;
@@ -275,6 +271,10 @@ namespace Snake.models
             {//ételt ettünk
                 //mégpedig ezt
                 var meal = Meals.Single(gp => gp.X == newHead.X && gp.Y == newHead.Y);
+                //todo:nem vesszük le a megevett ételt a listáról
+
+                Snake.Eat(meal);
+
                 HideMeal(meal);
                 GetNewMeal();
             }
@@ -351,8 +351,7 @@ namespace Snake.models
         private void SetNewGameCounters()
         {
             //Pontszámok nullázása
-            Points = 0;
-            EatenMealsCount = 0;
+          
             PlayTime = TimeSpan.FromSeconds(0);
             Snake = new Snake();
         }
@@ -360,8 +359,8 @@ namespace Snake.models
         private void ShowGameCounters()
         {
             MainWindow.LabelPlayTime.Content = $"Játékidő:{PlayTime.ToString("mm\\:ss")}";
-            MainWindow.LabelPoints.Content = $"Pontszám:{Points}";
-            MainWindow.LabelEatenMealsCount.Content = $"Megevett ételek:{EatenMealsCount}";
+            MainWindow.LabelPoints.Content = $"Pontszám:{Snake.Points}";
+            MainWindow.LabelEatenMealsCount.Content = $"Megevett ételek:{Snake.EatenMealsCount}";
             MainWindow.LabelSnakeLength.Content = $"A kígyó hossza:{Snake.Length}";
             MainWindow.LabelKeyDown.Content = $"A kígyó iránya:{Snake.Direction}";
 
