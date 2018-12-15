@@ -34,10 +34,10 @@ namespace Snake.models
         /// A kígyó eszik egy ételt
         /// </summary>
         /// <param name="meal"></param>
-        public void Eat(GamePoint meal)
+        public void Eat(Meal meal)
         {
             EatenMealsCount += 1;
-            Points += 1;
+            Points += meal.Points;
         }
     }
 }

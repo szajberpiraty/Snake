@@ -76,6 +76,7 @@
     <Compile Include="models\Arena.cs" />
     <Compile Include="models\ArenaSettings.cs" />
     <Compile Include="models\GamePoint.cs" />
+    <Compile Include="models\Meal.cs" />
     <Compile Include="models\Snake.cs" />
     <Compile Include="models\SnakeDirections.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
