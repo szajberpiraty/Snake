@@ -21,3 +21,5 @@ Folytatás  a Véglegesítés 4 video 8.percétől.
 
 Folytatás a ráadás 2 alkalom 1 videó 13.percétől
 
+Folytatás a ráadás 2 alkalom 1 video 45.percétől.
+

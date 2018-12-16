@@ -30,6 +30,30 @@ namespace Snake.models
 
             
         }
+
+        public GamePoint Head
+        {
+
+
+            get
+            {
+                        return this.Gamepoints[0];
+
+            }   
+                
+                
+                
+         }
+
+        /// <summary>
+        /// A kígyó nyaka
+        /// </summary>
+        public GamePoint Neck
+        {
+            get { return Gamepoints[1]; }
+        }
+        
+
         /// <summary>
         /// A kígyó eszik egy ételt
         /// </summary>

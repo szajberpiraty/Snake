@@ -4,6 +4,12 @@
         
     {
         /// <summary>
+        /// MEgmondja, hogy a kígyó fejében vagyunk-e.
+        /// </summary>
+        public static bool IsSittingInTheHeadOfSnake { get; } = false;
+
+
+        /// <summary>
         /// Játéktér vízszintes mérete
         /// </summary>
         public static int MaxX { get; } = 20;
