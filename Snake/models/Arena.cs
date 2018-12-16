@@ -301,13 +301,14 @@ namespace Snake.models
 
 
             //Ha nem evett
-            if (!IsEated) { 
-            var tailEnd = Snake.Gamepoints[Snake.Gamepoints.Count - 1];
-            HideSnakeTail(tailEnd);
+            if (!IsEated) {
+                var tailEnd = Snake.TailEnd;
+                HideSnakeTail(tailEnd);
                 Snake.Gamepoints.Remove(tailEnd);
             }
 
-            Snake.Gamepoints.Insert(0,newHead);//todo settert implementálni
+            //Snake.Gamepoints.Insert(0,newHead);//todo settert implementálni->megoldva
+            Snake.Head = newHead;
             ShowSnakeHead(newHead);
 
 

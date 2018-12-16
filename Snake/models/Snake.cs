@@ -39,7 +39,11 @@ namespace Snake.models
             {
                         return this.Gamepoints[0];
 
-            }   
+            }
+            set
+            {
+                Gamepoints.Insert(0, value);
+            }
                 
                 
                 
@@ -52,7 +56,19 @@ namespace Snake.models
         {
             get { return Gamepoints[1]; }
         }
-        
+
+        public GamePoint TailEnd
+        {
+
+
+            get
+            {
+                return Gamepoints[Gamepoints.Count - 1];
+            }
+                
+                
+        }
+
 
         /// <summary>
         /// A kígyó eszik egy ételt
