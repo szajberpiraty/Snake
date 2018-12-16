@@ -23,3 +23,5 @@ Folytatás a ráadás 2 alkalom 1 videó 13.percétől
 
 Folytatás a ráadás 2 alkalom 1 video 45.percétől.
 
+Folytatás a ráadás 2 alkalom 2 video 15.percétől.
+
