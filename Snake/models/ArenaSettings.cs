@@ -1,6 +1,6 @@
 ﻿namespace Snake.models
 {
-    public class ArenaSettings
+    public static class ArenaSettings
         
     {
         /// <summary>

@@ -36,11 +36,12 @@ namespace Snake.models
         /// <summary>
         /// Az ételek listája, amit a kígyó megehet
         /// </summary>
-        private List<Meal> Meals;
+        private List<Meal> Meals=new List<Meal>();
         /// <summary>
         /// Véletlenszám generátor, az aréna létrejöttekor inicializálódik
         /// </summary>
         private Random randomNumberGenerator = new Random();
+        private bool IsGameInProgress;
 
         public Arena(MainWindow mainWindow)
         {
@@ -52,17 +53,49 @@ namespace Snake.models
         //A játék indítása
         public void Start()
         {
+            InitializeArena();
+
             SetNewGameCounters();
             //először a kígyót tesszük ki, így nem kell az ételekkel foglalkozni, az étel könnyebben igazodik a kígyóhoz
 
             SetSnakeForStart();
 
             SetMealsForStart();
+
+            
+
+            GameTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.Normal, ItIsTimeForShow, Application.Current.Dispatcher);
+            IsGameInProgress = true;
+            SetButtonAvailability();
+        }
+
+        private void InitializeArena()
+        {
             if (GameTimer != null)
             {
                 GameTimer.Stop();
             }
-            GameTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.Normal, ItIsTimeForShow, Application.Current.Dispatcher);
+
+            //Mindig a 0. elemet érdemes törölni
+            var cnt = Meals.Count;
+
+            for (int i = 0; i < cnt; i++)
+            {
+                RemoveMeal(Meals[0]);
+            }
+            cnt = Snake.Gamepoints.Count;
+
+            //Kígyó törlése
+            for (int i = 0; i < cnt; i++)
+            {
+                RemoveSnakeTail(Snake.Gamepoints[0]);
+            }
+        }
+
+        private void SetButtonAvailability()
+        {
+            MainWindow.ButtonStart.IsEnabled = !IsGameInProgress;
+            MainWindow.ButtonStop.IsEnabled = IsGameInProgress;
         }
 
         private void SetSnakeForStart()
@@ -169,8 +202,10 @@ namespace Snake.models
         /// Eltüntetjük az ételt
         /// </summary>
         /// <param name="meal"></param>
-        private void HideMeal(GamePoint meal)
+        /// 
+        private void RemoveMeal(Meal meal)
         {
+            Meals.Remove(meal);
             var child = GetGridArenaCell(meal);
             child.Icon = FontAwesome.WPF.FontAwesomeIcon.SquareOutline;
             child.Foreground = Brushes.Black;
@@ -196,11 +231,12 @@ namespace Snake.models
             child.Foreground = Brushes.Blue;
         }
 
-        private void HideSnakeTail(GamePoint tailEnd)
+        private void RemoveSnakeTail(GamePoint tailEnd)
         {
             var child = GetGridArenaCell(tailEnd);
             child.Icon = FontAwesome.WPF.FontAwesomeIcon.SquareOutline;
             child.Foreground = Brushes.Black;
+            Snake.Gamepoints.Remove(tailEnd);
         }
 
 
@@ -222,6 +258,8 @@ namespace Snake.models
         public void Stop()
         {
             GameTimer.Stop();
+            IsGameInProgress = false;
+            SetButtonAvailability();
         }
 
 
@@ -264,6 +302,7 @@ namespace Snake.models
             if (Snake.Gamepoints.Any(gp=>gp.X==newHead.X && gp.Y==newHead.Y))
             {
                 GameOver();
+                return;
             }
             //megevett-e ételt
             var IsEated = Meals.Any(gp => gp.X == newHead.X && gp.Y == newHead.Y);
@@ -274,9 +313,11 @@ namespace Snake.models
                 //todo:nem vesszük le a megevett ételt a listáról
 
                 Snake.Eat(meal);
-                Meals.Remove(meal);
+               
 
-                HideMeal(meal);
+                RemoveMeal(meal);
+
+
                 while (Meals.Count < ArenaSettings.MealsCountForStart)
                 {//Addig megyünk amíg sikerül minden ételt kirakni
                     GetNewMeal();
@@ -293,6 +334,7 @@ namespace Snake.models
             if (newHead.X==0 || newHead.Y==0 || newHead.X==ArenaSettings.MaxX+1 || newHead.Y==ArenaSettings.MaxY+1)
             {
                 GameOver();
+                return;
             }
 
             //megjeleníteni a kígyó új helyzetét
@@ -303,8 +345,8 @@ namespace Snake.models
             //Ha nem evett
             if (!IsEated) {
                 var tailEnd = Snake.TailEnd;
-                HideSnakeTail(tailEnd);
-                Snake.Gamepoints.Remove(tailEnd);
+                RemoveSnakeTail(tailEnd);
+                
             }
 
             //Snake.Gamepoints.Insert(0,newHead);//todo settert implementálni->megoldva
@@ -322,6 +364,7 @@ namespace Snake.models
 
         private void GameOver()
         {
+            MainWindow.LabelGameOver.Content = "Játék vége!";
             Stop();
             MessageBox.Show("Játék vége!");
 
@@ -457,6 +500,7 @@ namespace Snake.models
             //Pontszámok nullázása
           
             PlayTime = TimeSpan.FromSeconds(0);
+            MainWindow.LabelGameOver.Content = "";
             Snake = new Snake();
         }
 
