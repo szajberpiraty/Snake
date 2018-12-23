@@ -7,11 +7,12 @@
         xmlns:local="clr-namespace:Snake"
         mc:Ignorable="d"
         KeyDown="Window_KeyDown"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="850">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -22,6 +23,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
+           
             <Label Grid.Row="0" x:Name="LabelPoints"/>
             <Label Grid.Row="1" x:Name="LabelEatenMealsCount"/>
             <Label Grid.Row="2" x:Name="LabelSnakeLength"/>
@@ -50,7 +52,8 @@
 
 
         </Grid>
-            <Grid x:Name="GridArena" Grid.Column="0" Background="Gray" Margin="10">
+        <Canvas Grid.Column="2" Background="Aquamarine" x:Name="canvasArena" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Grid x:Name="GridArena" Grid.Column="0" Background="Gray" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0"/>
                 <RowDefinition Height="*"/>

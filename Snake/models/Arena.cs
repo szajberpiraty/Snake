@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace Snake.models
@@ -42,6 +44,10 @@ namespace Snake.models
         /// </summary>
         private Random randomNumberGenerator = new Random();
         private bool IsGameInProgress;
+
+        // a vászonra rajzolt kép egységei
+        private double EllipseWidth=10;
+        private double EllipseHeight=10;
 
         public Arena(MainWindow mainWindow)
         {
@@ -164,11 +170,10 @@ namespace Snake.models
 
                 //A children gyűjtemény UIElement elemekből áll, az imageawesome eléréséhez ki kell bányászni belőle
                 //így már van icon property
-                ShowMeal(meal);
+                CreateMeal(meal);
 
 
-                //hozzáadni a listához
-                Meals.Add(meal);
+               
 
 
             } //Csak akkkor továbbmenni, ha az étel nincs még a táblán
@@ -190,13 +195,38 @@ namespace Snake.models
         /// Megjelenítjük az ételt
         /// </summary>
         /// <param name="child"></param>
-        private void ShowMeal(GamePoint meal)
+        private void CreateMeal(Meal meal)
         {
             var child = GetGridArenaCell(meal);
             child.Icon = FontAwesome.WPF.FontAwesomeIcon.Star;
             child.Foreground = Brushes.Red;
             child.Spin = true;
             child.SpinDuration = 5;
+
+            //hozzáadni a listához
+            Meals.Add(meal);
+
+            //Ellipszis
+
+            var paint = new Ellipse();
+
+            //MEgformázzuk
+
+            paint.Fill = Brushes.Orange;
+            paint.Width = EllipseWidth;
+            paint.Height = EllipseHeight;
+
+            //Összehangoljuk a vászonnal
+
+            Canvas.SetTop(paint,meal.Y*EllipseHeight);
+            Canvas.SetLeft(paint,meal.X*EllipseWidth);
+
+            //kirakjuk a vászonra
+
+            MainWindow.canvasArena.Children.Add(paint);
+
+
+
         }
         /// <summary>
         /// Eltüntetjük az ételt
@@ -205,12 +235,21 @@ namespace Snake.models
         /// 
         private void RemoveMeal(Meal meal)
         {
-            Meals.Remove(meal);
+            
             var child = GetGridArenaCell(meal);
             child.Icon = FontAwesome.WPF.FontAwesomeIcon.SquareOutline;
             child.Foreground = Brushes.Black;
             child.Spin = false;
             child.SpinDuration = 1;
+
+            //meg kell határozni az indexét
+
+            var index = Meals.IndexOf(meal);
+
+            MainWindow.canvasArena.Children.RemoveAt(index);
+
+            Meals.Remove(meal);
+
         }
 
         private void ShowSnakeHead(GamePoint head)
